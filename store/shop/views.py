@@ -6,5 +6,5 @@ def index(request):
     return HttpResponse('<h1>Shop main page</h1>')
 
 
-def categories(request, cat):
-    return HttpResponse(f'<h2>{cat}</h2>')
+def categories(request, category):
+    return HttpResponse(f'<h2>{category}</h2>')
