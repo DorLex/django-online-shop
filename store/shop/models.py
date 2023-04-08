@@ -8,8 +8,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField()
-    available = models.BooleanField(default=True)
+    quantity = models.PositiveIntegerField(default=0)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 

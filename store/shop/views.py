@@ -3,7 +3,10 @@ from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse('<h1>Shop main page</h1>')
+    context = {
+        'title': 'Main Page',
+    }
+    return render(request, 'shop/index.html', context=context)
 
 
 def categories(request, category):
