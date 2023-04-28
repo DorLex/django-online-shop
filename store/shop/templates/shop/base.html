@@ -3,11 +3,26 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+
+  {% if title %}
+  <title>Store | {{ title }}</title>
+  {% else %}
+  <title>Store</title>
+  {% endif %}
+
   <link rel="shortcut icon" href="#">
 </head>
 
 <body>
+
+  {% block title %}
+  {% if title %}
+  <h2>{{ title }}</h2>
+  {% else %}
+  <h2>Store</h2>
+  {% endif %}
+  {% endblock %}
+
 
   {% block content %}
   {% endblock %}
