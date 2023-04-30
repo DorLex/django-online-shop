@@ -1,24 +1,19 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-
-# from .models import Product
+from .models import Product, Category
 
 
 class ShopHome(View):
     def get(self, request, *args, **kwargs):
-        context = {
-            'title': 'Main Page',
-        }
+        phones = Product.objects.select_related('category').filter(category__title='phones')
+
+        context = {'title': 'Main Page', 'phones': phones, }
         return render(request, 'shop/index.html', context=context)
 
-
-# def index(request):
-#     context = {
-#         'title': 'Main Page',
-#     }
-#     return render(request, 'shop/index.html', context=context)
+    def post(self, request, *args, **kwargs):
+        context = {'test': request.POST, }
+        return render(request, 'shop/index.html', context=context)
 
 
 # class ShopHome(ListView):
@@ -34,11 +29,6 @@ class ShopHome(View):
 #         return context
 
 
-# def categories(request, category):
-#     return HttpResponse(f'<h2>{category}</h2>')
-
-
 class Categories(View):
     def get(self, request, *args, **kwargs):
-        # return HttpResponse(f'<h2>{args}, {kwargs}</h2>')
         return render(request, 'shop/categories.html', context=kwargs)

@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),  # Панель Инструментов Отладки Django
+    
     path('admin/', admin.site.urls),
     path('', include('shop.urls')),
 ]
