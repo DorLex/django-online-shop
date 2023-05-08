@@ -1,0 +1,15 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+
+
+<form method="post">
+  {% csrf_token %}
+
+  <!-- отображаем стандартный вид формы -->
+  {{ form.as_p }}
+
+  <button type="submit">Регистрация</button>
+</form>
+
+{% endblock %}

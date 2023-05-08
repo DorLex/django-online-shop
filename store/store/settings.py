@@ -129,6 +129,11 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-# для картинок
+# для изображений
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
+
+# url для перенаправления при успешной авторизации
+LOGIN_REDIRECT_URL = '/'
+# при разлогировании
+LOGOUT_REDIRECT_URL = '/'

@@ -2,23 +2,19 @@
 
 {% block content %}
 
-<p>{{ test }}</p>
 
-<form action="{% url 'home' %}" method="post">
-  {% csrf_token %}
-
-  <input type="text" name="test_str">
-  <input type="submit">
-</form>
-
-
-{% for phone in phones %}
+{% for product in products %}
 <hr>
-<p>{{ phone.category.title }} :</p>
-<p>{{ phone.title }}</p>
-<p>{{ phone.description }}</p>
+
+<h3>{{ product.category.title }}: {{ product.title }}</h3>
+
+<img src="{{ product.image.url }}" height=100>
+
+<p>{{ product.description }}</p>
+<h4>цена: {{ product.price }}</h4>
 
 {% endfor %}
+
 
 
 {% endblock %}
