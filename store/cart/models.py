@@ -11,6 +11,8 @@ class Cart(models.Model):
 
     class Meta:
         ordering = ('time_created',)
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
 
     def __str__(self):
         return f'<{self.user}_cart>'
@@ -22,12 +24,13 @@ class CartProduct(models.Model):
     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
     time_created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_updated = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
-
     cart = models.ForeignKey('Cart', related_name='cart_products',
                              on_delete=models.CASCADE, verbose_name='Корзина')
 
     class Meta:
         ordering = ('time_created',)
+        verbose_name = 'Товар в корзине'
+        verbose_name_plural = 'Товары в корзинах'
 
     def __str__(self):
         return f'<{self.product}_in_{self.cart}>'
