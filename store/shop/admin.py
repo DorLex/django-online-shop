@@ -9,7 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     # список отображаемых полей
     list_display = (
-        'id', 'title', 'get_html_image', 'price', 'quantity', 'time_created', 'time_updated',
+        'id', 'title', 'get_html_image', 'price', 'quantity', 'time_created', 'time_updated', 'category',
     )
     list_display_links = ('id', 'title',)  # список полей в виде ссылки для перехода к конкретной записи
     search_fields = ('title', 'description',)  # поля, по которым можно будет производить поиск записей
