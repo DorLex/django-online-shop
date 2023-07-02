@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'debug_toolbar',  # Панель Инструментов Отладки Django
 
     'shop',
+    'cart',
 ]
 
 MIDDLEWARE = [
