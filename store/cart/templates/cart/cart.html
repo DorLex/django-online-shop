@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+
+
+{% if cart_products|length == 0 %}
+<p>---Корзина пуста---</p>
+{% endif %}
+
+
+{% for cart_product in cart_products %}
+<hr>
+
+<h3>{{ cart_product.product.title }}</h3>
+<p>Количество: {{ cart_product.quantity }}</p>
+<p>Цена: {{ cart_product.product.price }}</p>
+
+
+{% endfor %}
+
+
+{% endblock %}
