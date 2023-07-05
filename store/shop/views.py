@@ -17,7 +17,7 @@ class ShopHome(ListView):
 
     # на результат будет ссылаться context['object_list']
     queryset = model.objects.all().select_related('category'). \
-        only('title', 'image', 'description', 'price', 'category__title', )
+        only('id', 'title', 'image', 'description', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     paginate_by = 2  # пагинация, object_list теперь будет ссылаться на записи одной страницы
