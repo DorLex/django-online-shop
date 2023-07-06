@@ -7,15 +7,26 @@
 <p>---Корзина пуста---</p>
 
 {% else %}
+
+<h3>Общая стоимость: {{ total_price }}</h3>
+
 {% for cart_product in cart_products %}
 <hr>
 <h3>{{ cart_product.product.title }}</h3>
+<img src="{{ cart_product.product.image.url }}" height=70>
+<p>Цена за шт.: {{ cart_product.product.price }}</p>
 <p>Количество: {{ cart_product.quantity }}</p>
-<p>Цена: {{ cart_product.product.price }}</p>
+<p>Цена за количество: {{ cart_product.several_price }}</p>
+
+<form action="{% url 'cart_delete' cart_product.id %}" method="post">
+  {% csrf_token %}
+  <button name="delete_product_in_cart">Убрать из корзины</button>
+</form>
+
 {% endfor %}
 
 {% endif %}
 
-
+<hr>
 
 {% endblock %}

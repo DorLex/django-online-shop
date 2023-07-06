@@ -15,12 +15,12 @@ class ShopHome(ListView):
 
     model = Product
 
-    # на результат будет ссылаться context['object_list']
+    # на результат по умолчанию будет ссылаться context['object_list']
     queryset = model.objects.all().select_related('category'). \
         only('id', 'title', 'image', 'description', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
-    paginate_by = 2  # пагинация, object_list теперь будет ссылаться на записи одной страницы
+    paginate_by = 3  # пагинация, object_list теперь будет ссылаться на записи одной страницы
     template_name = 'shop/index.html'
 
     extra_context = {
