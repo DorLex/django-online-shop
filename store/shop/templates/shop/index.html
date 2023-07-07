@@ -2,26 +2,20 @@
 
 {% block content %}
 
-
 <h3>Категории:</h3>
-
 <ul>
   {% for category in categories %}
-  <li><a href="{% url 'products_category' category.slug %}">{{ category.title }}</a></li>
+  <li><a href="{% url 'product_category' category.slug %}">{{ category.title }}</a></li>
   {% endfor %}
 </ul>
 
 {% for product in products %}
 <hr>
-
-
 <h3>{{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a></h3>
 
 <img src="{{ product.image.url }}" height=100>
 
-
 <h4>цена: {{ product.price }}</h4>
-
 
 <form action="{% url 'cart_add' product.id %}" method="post">
   {% csrf_token %}
@@ -31,10 +25,7 @@
     <button name="add_to_cart">Добавить в корзину</button>
   </p>
 </form>
-
 {% endfor %}
-
 <hr>
-
 
 {% endblock %}
