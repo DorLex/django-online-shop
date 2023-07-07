@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
 from .models import Product
@@ -17,7 +17,7 @@ class ShopHome(ListView):
 
     # на результат по умолчанию будет ссылаться context['object_list']
     queryset = model.objects.all().select_related('category'). \
-        only('id', 'title', 'image', 'description', 'price', 'category__title', )
+        only('id', 'slug', 'title', 'image', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     paginate_by = 3  # пагинация, object_list теперь будет ссылаться на записи одной страницы
@@ -39,6 +39,13 @@ class ShopHome(ListView):
     #     response = super().render_to_response(context, **response_kwargs)
     #     response.set_cookie(key='test', value='my cookie', max_age=2)
     #     return response
+
+
+class ProductDetail(DetailView):
+    model = Product
+    template_name = 'shop/product_detail.html'
+    slug_url_kwarg = 'product_slug'
+    context_object_name = 'product'
 
 
 class RegisterUser(CreateView):

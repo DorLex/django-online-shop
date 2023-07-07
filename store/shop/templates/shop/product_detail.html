@@ -2,17 +2,14 @@
 
 {% block content %}
 
+<h3>{{ product.title }}</h3>
 
-{% for product in products %}
-<hr>
+<img src="{{ product.image.url }}" height=150>
 
-
-<h3>{{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a></h3>
-
-<img src="{{ product.image.url }}" height=100>
-
-
+<p>{{ product.description }}</p>
 <h4>цена: {{ product.price }}</h4>
+
+<h4>Количество на складе: {{ product.quantity }}</h4>
 
 
 <form action="{% url 'cart_add' product.id %}" method="post">
@@ -23,10 +20,6 @@
     <button name="add_to_cart">Добавить в корзину</button>
   </p>
 </form>
-
-{% endfor %}
-
-<hr>
 
 
 {% endblock %}
