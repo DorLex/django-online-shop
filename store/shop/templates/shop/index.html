@@ -3,6 +3,14 @@
 {% block content %}
 
 
+<h3>Категории:</h3>
+
+<ul>
+  {% for category in categories %}
+  <li><a href="{% url 'products_category' category.slug %}">{{ category.title }}</a></li>
+  {% endfor %}
+</ul>
+
 {% for product in products %}
 <hr>
 

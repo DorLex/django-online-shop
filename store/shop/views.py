@@ -7,16 +7,14 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
-from .models import Product
+from .models import Product, Category
 
 
 class ShopHome(ListView):
     """Показывает все товары"""
 
-    model = Product
-
     # на результат по умолчанию будет ссылаться context['object_list']
-    queryset = model.objects.all().select_related('category'). \
+    queryset = Product.objects.all().select_related('category'). \
         only('id', 'slug', 'title', 'image', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
@@ -25,6 +23,7 @@ class ShopHome(ListView):
 
     extra_context = {
         'title': 'Главная страница',
+        'categories': Category.objects.all().only('id', 'slug', 'title', )
     }  # только dict или list[(key, value),], т.к. используется kwargs.update()
 
     # нужен, если контекст формируется с использованием экземпляра данного класса
@@ -39,6 +38,25 @@ class ShopHome(ListView):
     #     response = super().render_to_response(context, **response_kwargs)
     #     response.set_cookie(key='test', value='my cookie', max_age=2)
     #     return response
+
+
+class ProductsCategory(ListView):
+    template_name = 'shop/index.html'
+    context_object_name = 'products'
+
+    extra_context = {
+        'categories': Category.objects.all().only('id', 'slug', 'title', )
+    }
+
+    def get_queryset(self):
+        return Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
+            select_related('category').only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = Category.objects.filter(slug=self.kwargs['category_slug']).values('title')
+        context['title'] = category[0]['title']
+        return context
 
 
 class ProductDetail(DetailView):

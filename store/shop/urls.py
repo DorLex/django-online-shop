@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', views.LoginUser.as_view(), name='login'),
     path('logout/', views.LogoutUser.as_view(), name='logout'),
     path('product/<slug:product_slug>/', views.ProductDetail.as_view(), name='product_detail'),
-    path('categories/<slug:category_slug>/', views.Categories.as_view(), name='categories'),
+    path('categories/<slug:category_slug>/', views.ProductsCategory.as_view(), name='products_category'),
 ]
