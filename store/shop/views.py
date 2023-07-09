@@ -1,16 +1,14 @@
-from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
-from .models import Product, Category
+from .models import Product
+from .utils import DataMixin
 
 
-class ShopHome(ListView):
+class ShopHome(DataMixin, ListView):
     """Показывает все товары на главной странице"""
 
     # на результат по умолчанию будет ссылаться context['object_list']
@@ -18,28 +16,16 @@ class ShopHome(ListView):
         only('id', 'slug', 'title', 'image', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
-    paginate_by = 3  # пагинация, object_list теперь будет ссылаться на записи одной страницы
     template_name = 'shop/index.html'
 
-    # только dict или list[(key, value),], т.к. используется kwargs.update()
-    extra_context = {
-        'title': 'Главная страница',
-    }
-
-    # прокидываем список всех категорий
+    # нужен, если контекст формируется с использованием экземпляра данного класса
     def get_context_data(self, *, object_list=None, **kwargs):
+        # вызываем родительский метод, так как он возвращает paginator и др.
         context = super().get_context_data(**kwargs)
-        categories = Category.objects.all().only('id', 'slug', 'title', )
-        context['categories'] = categories
+        context.update(self.get_common_context())
+        context['title'] = 'Главная страница'
 
         return context
-
-    # нужен, если контекст формируется с использованием экземпляра данного класса
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     # вызываем родительский метод, так как он возвращает paginator и др.
-    #     context = super().get_context_data(**kwargs)
-    #     # print(self.request.COOKIES.get('sessionid'))
-    #     return context
 
     # добавить куки
     # def render_to_response(self, context, **response_kwargs):
@@ -48,23 +34,21 @@ class ShopHome(ListView):
     #     return response
 
 
-class ProductCategory(ListView):
+class ProductCategory(DataMixin, ListView):
     """Показывает товары выбранной категории"""
 
     template_name = 'shop/index.html'
     context_object_name = 'products'
 
     def get_queryset(self):
-        return Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
+        queryset = Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
             select_related('category').only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+        return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # убрать дубли
-        categories = Category.objects.all().only('id', 'slug', 'title', )
-        context['categories'] = categories
-        category = Category.objects.filter(slug=self.kwargs['category_slug']).values('title')
-        context['title'] = category[0]['title']
+        context.update(self.get_common_context())
+        context['category_selected'] = self.kwargs['category_slug']
 
         return context
 
@@ -83,7 +67,7 @@ class RegisterUser(CreateView):
 
     form_class = RegisterUserForm  # используем свою форму
     template_name = 'shop/register.html'
-    extra_context = {'title': 'Регистрация', }
+    extra_context = {'title': 'Регистрация', }  # только dict или list[(key, value),], т.к. используется kwargs.update()
     success_url = reverse_lazy('login')  # ленивое перенаправление при успехе
 
 

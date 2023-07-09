@@ -5,7 +5,13 @@
 <h3>Категории:</h3>
 <ul>
   {% for category in categories %}
+
+  {% if category.slug == category_selected %}
+  <li>{{ category.title }}</li>
+  {% else %}
   <li><a href="{% url 'product_category' category.slug %}">{{ category.title }}</a></li>
+  {% endif %}
+
   {% endfor %}
 </ul>
 
