@@ -41,9 +41,9 @@ class ProductCategory(DataMixin, ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        queryset = Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
+        products = Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
             select_related('category').only('id', 'slug', 'title', 'image', 'price', 'category__title', )
-        return queryset
+        return products
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

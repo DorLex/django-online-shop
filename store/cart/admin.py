@@ -8,7 +8,7 @@ class CartAdmin(admin.ModelAdmin):
 
     # список отображаемых полей
     list_display = (
-        'id', 'user', 'time_created', 'time_updated',
+        'id', 'user', 'total_price', 'time_created', 'time_updated',
     )
     list_display_links = ('id', 'user',)  # список полей в виде ссылки для перехода к конкретной записи
     search_fields = ('user__username',)  # поля, по которым можно будет производить поиск записей
@@ -22,7 +22,7 @@ class CartProductAdmin(admin.ModelAdmin):
 
     # список отображаемых полей
     list_display = (
-        'id', 'product', 'quantity', 'time_created', 'time_updated', 'cart',
+        'id', 'product', 'quantity', 'several_price', 'time_created', 'time_updated', 'cart',
     )
     list_display_links = ('id', 'product',)  # список полей в виде ссылки для перехода к конкретной записи
     search_fields = ('product__title',)  # поля, по которым можно будет производить поиск записей
