@@ -8,7 +8,7 @@ from .models import Cart, CartProduct
 
 class CartView(ListView):
     template_name = 'cart/cart.html'
-    paginate_by = 5
+    paginate_by = 3
     context_object_name = 'cart_products'
 
     def get_queryset(self):
@@ -32,26 +32,23 @@ class CartAdd(View):
 
     def post(self, request, product_id, *args, **kwargs):
         user = request.user
-        product = Product.objects.get(pk=product_id)
+        product = Product.objects.filter(pk=product_id).only('id', 'price').first()
         product_quantity = request.POST.get('product_quantity')
         several_price = product.price * int(product_quantity)
 
-        user_cart = Cart.objects.filter(user=user).first()
+        user_cart = Cart.objects.filter(user=user).only('id', 'total_price').first()
         if user_cart:
-            product_in_cart = CartProduct.objects.filter(product=product, cart=user_cart).first()
-            if product_in_cart:
-                product_in_cart.quantity += int(product_quantity)
-                product_in_cart.several_price += several_price
-                product_in_cart.save()
+            cart_product = CartProduct.objects.filter(product=product, cart=user_cart). \
+                only('id', 'quantity', 'several_price').first()
+            if cart_product:
+                cart_product.quantity += int(product_quantity)
+                cart_product.several_price += several_price
+                cart_product.save()
                 user_cart.total_price += several_price
                 user_cart.save()
             else:
-                product_in_cart = CartProduct.objects.create(
-                    product=product,
-                    quantity=product_quantity,
-                    several_price=several_price,
-                    cart=user_cart
-                )
+                CartProduct.objects.create(product=product, quantity=product_quantity,
+                                           several_price=several_price, cart=user_cart)
                 user_cart.total_price += several_price
                 user_cart.save()
         else:
