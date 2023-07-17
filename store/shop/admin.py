@@ -37,5 +37,5 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}  # автоматически заполняет поле slug по данным поля title
 
 
-admin.site.register(models.Product, ProductAdmin)
-admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.Products, ProductAdmin)
+admin.site.register(models.Categories, CategoryAdmin)

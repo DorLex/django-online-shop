@@ -31,5 +31,5 @@ class CartProductAdmin(admin.ModelAdmin):
     # prepopulated_fields = {'slug': ('product',)}  # автоматически заполняет поле slug по данным поля product
 
 
-admin.site.register(models.Cart, CartAdmin)
-admin.site.register(models.CartProduct, CartProductAdmin)
+admin.site.register(models.Carts, CartAdmin)
+admin.site.register(models.CartProducts, CartProductAdmin)

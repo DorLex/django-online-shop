@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from shop.models import Product
+from shop.models import Products
 
 
-class Cart(models.Model):
+class Carts(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -37,9 +37,9 @@ class Cart(models.Model):
         return f'<{self.user}_cart>'
 
 
-class CartProduct(models.Model):
+class CartProducts(models.Model):
     product = models.ForeignKey(
-        Product,
+        Products,
         related_name='cart_products',
         on_delete=models.CASCADE,
         verbose_name='Товар'
@@ -68,7 +68,7 @@ class CartProduct(models.Model):
     )
 
     cart = models.ForeignKey(
-        'Cart',
+        'Carts',
         related_name='cart_products',
         on_delete=models.CASCADE,
         verbose_name='Корзина'

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
-from .models import Product
+from .models import Products
 from .utils import DataMixin
 
 
@@ -12,7 +12,7 @@ class ShopHome(DataMixin, ListView):
     """Показывает все товары на главной странице"""
 
     # на результат по умолчанию будет ссылаться context['object_list']
-    queryset = Product.objects.all().select_related('category'). \
+    queryset = Products.objects.all().select_related('category'). \
         only('id', 'slug', 'title', 'image', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
@@ -41,7 +41,7 @@ class ProductCategory(DataMixin, ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        products = Product.objects.filter(category__slug=self.kwargs['category_slug'], ). \
+        products = Products.objects.filter(category__slug=self.kwargs['category_slug'], ). \
             select_related('category').only('id', 'slug', 'title', 'image', 'price', 'category__title', )
         return products
 
@@ -56,7 +56,7 @@ class ProductCategory(DataMixin, ListView):
 class ProductDetail(DetailView):
     """Показывает страницу товара"""
 
-    model = Product
+    model = Products
     template_name = 'shop/product_detail.html'
     slug_url_kwarg = 'product_slug'
     context_object_name = 'product'

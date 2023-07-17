@@ -1,4 +1,4 @@
-from .models import Category
+from .models import Categories
 
 
 class DataMixin:
@@ -8,6 +8,6 @@ class DataMixin:
 
     def get_common_context(self):
         # прокидываем список всех категорий
-        categories = Category.objects.all().only('id', 'slug', 'title', )
+        categories = Categories.objects.all().only('id', 'slug', 'title', )
         context = {'categories': categories, }
         return context

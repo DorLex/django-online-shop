@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Product(models.Model):
+class Products(models.Model):
     title = models.CharField(
         max_length=200,
         db_index=True,
@@ -48,7 +48,7 @@ class Product(models.Model):
     )
 
     category = models.ForeignKey(
-        'Category',
+        'Categories',
         related_name='products',
         on_delete=models.PROTECT,
         verbose_name="Категория"
@@ -63,7 +63,7 @@ class Product(models.Model):
         return self.title
 
 
-class Category(models.Model):
+class Categories(models.Model):
     title = models.CharField(
         max_length=200,
         db_index=True,
@@ -84,3 +84,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+# class Reviews(models.Model):
+#     pass
