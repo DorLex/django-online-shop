@@ -15,6 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description',)  # поля, по которым можно будет производить поиск записей
     list_filter = ('category', 'time_created', 'time_updated',)  # поля, по которым можем фильтровать список товаров
     prepopulated_fields = {'slug': ('title',)}  # автоматически заполняет поле slug по данным поля title
+    filter_horizontal = ('users_favorites',)
 
     # возвращает html тег с изображением
     def get_html_image(self, product):
