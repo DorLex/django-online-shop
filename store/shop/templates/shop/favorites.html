@@ -2,31 +2,14 @@
 
 {% block content %}
 
-<h3>Категории:</h3>
-<ul>
-  {% for category in categories %}
 
-  {% if category.slug == category_selected %}
-  <li>{{ category.title }}</li>
-  {% else %}
-  <li><a href="{% url 'product_category' category.slug %}">{{ category.title }}</a></li>
-  {% endif %}
-
-  {% endfor %}
-</ul>
-
-
-{% for product in products %}
+{% for product in favorites_products %}
 <hr>
+
 
 <h3>
   {{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
-
-  {% if product in favorites_products %}
   <button formaction="">Убрать из избранного</button>
-  {% else %}
-  <button formaction="">Добавить в избранное</button>
-  {% endif %}
 </h3>
 
 <img src="{{ product.image.url }}" height=100>
@@ -43,5 +26,6 @@
 </form>
 {% endfor %}
 <hr>
+
 
 {% endblock %}

@@ -1,6 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
+from django.db.models import Prefetch
+from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
@@ -12,8 +16,9 @@ class ShopHome(DataMixin, ListView):
     """Показывает все товары на главной странице"""
 
     # на результат по умолчанию будет ссылаться context['object_list']
-    queryset = Products.objects.all().select_related('category'). \
-        only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+    queryset = Products.objects.all() \
+        .select_related('category') \
+        .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     template_name = 'shop/index.html'
@@ -25,6 +30,9 @@ class ShopHome(DataMixin, ListView):
         context.update(self.get_common_context())
         context['title'] = 'Главная страница'
 
+        favorites_products = Products.objects.filter(users_favorites=self.request.user).only('id', )
+        context['favorites_products'] = favorites_products
+
         return context
 
     # добавить куки
@@ -34,15 +42,16 @@ class ShopHome(DataMixin, ListView):
     #     return response
 
 
-class ProductCategory(DataMixin, ListView):
+class ProductsCategory(DataMixin, ListView):
     """Показывает товары выбранной категории"""
 
     template_name = 'shop/index.html'
     context_object_name = 'products'
 
     def get_queryset(self):
-        products = Products.objects.filter(category__slug=self.kwargs['category_slug'], ). \
-            select_related('category').only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+        products = Products.objects.filter(category__slug=self.kwargs['category_slug'], ) \
+            .select_related('category') \
+            .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
         return products
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -89,18 +98,25 @@ class LogoutUser(LogoutView):
     """
     pass
 
-#
-# def logout_user(request):
-#     """Разлогинивает пользователя"""
-#     logout(request)
-#     return redirect('login')
 
+class ShowFavorites(ListView):
+    template_name = 'shop/favorites.html'
+    context_object_name = 'favorites_products'
+    paginate_by = 3
 
-# class Categories(View):
+    def get_queryset(self):
+        # product = Products.objects.first()
+        # print(product.users_favorites.__dict__)
+
+        favorites_products = Products.objects.filter(users_favorites=self.request.user) \
+            .select_related('category') \
+            .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+        return favorites_products
+
+# class ShowFavorites(View):
 #     def get(self, request, *args, **kwargs):
-#         # kwargs - атрибуты из url (не get)
+#         user = request.user
 #
-#         response = render(request, 'shop/categories.html')
-#         # response.set_cookie(key='test', value='my cookie', max_age=10)
+#         favorites_products = Products.objects.filter(users_favorites=user).only('title')
 #
-#         return response
+#         return render(request, 'shop/favorites.html', context={'test': favorites_products})

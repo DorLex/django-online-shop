@@ -30,7 +30,12 @@
   <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
   {% endif %}
 
-  <p><a href="{% url 'home' %}">Главная</a>|<a href="{% url 'cart_view' %}">Корзина</a></p>
+
+  <p>
+    <a href="{% url 'home' %}">Главная</a>
+    <a href="{% url 'favorites_products' %}">Избранное</a>
+    <a href="{% url 'cart_view' %}">Корзина</a>
+  </p>
 
 
 
