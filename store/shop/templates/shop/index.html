@@ -22,7 +22,7 @@
 <h3>
   {{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
 
-  {% if product in favorites_products %}
+  {% if product.in_user_favorites %}
   <button formaction="">Убрать из избранного</button>
   {% else %}
   <button formaction="">Добавить в избранное</button>

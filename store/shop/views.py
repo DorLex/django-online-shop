@@ -16,9 +16,18 @@ class ShopHome(DataMixin, ListView):
     """Показывает все товары на главной странице"""
 
     # на результат по умолчанию будет ссылаться context['object_list']
-    queryset = Products.objects.all() \
-        .select_related('category') \
-        .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+    def get_queryset(self):
+        products = Products.objects.all() \
+            .select_related('category') \
+            .prefetch_related(
+            Prefetch(
+                'users_favorites',
+                queryset=User.objects.filter(pk=self.request.user.pk).only('id', ),
+                to_attr='in_user_favorites'
+            )
+        ).only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+
+        return products
 
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     template_name = 'shop/index.html'
@@ -29,9 +38,6 @@ class ShopHome(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         context.update(self.get_common_context())
         context['title'] = 'Главная страница'
-
-        favorites_products = Products.objects.filter(users_favorites=self.request.user).only('id', )
-        context['favorites_products'] = favorites_products
 
         return context
 
@@ -105,9 +111,6 @@ class ShowFavorites(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        # product = Products.objects.first()
-        # print(product.users_favorites.__dict__)
-
         favorites_products = Products.objects.filter(users_favorites=self.request.user) \
             .select_related('category') \
             .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
