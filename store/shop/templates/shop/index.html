@@ -21,13 +21,17 @@
 
 <h3>
   {{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
-
-  {% if product.in_user_favorites %}
-  <button formaction="">Убрать из избранного</button>
-  {% else %}
-  <button formaction="">Добавить в избранное</button>
-  {% endif %}
 </h3>
+
+<p>
+<form method="get">
+  {% if product.in_user_favorites %}
+  <button formaction="{% url 'home' %}">Убрать из избранного</button>
+  {% else %}
+  <button formaction="{% url 'home' %}">Добавить в избранное</button>
+  {% endif %}
+</form>
+</p>
 
 <img src="{{ product.image.url }}" height=100>
 
