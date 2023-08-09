@@ -2,14 +2,12 @@
 
 {% block content %}
 
-
 {% for product in favorites_products %}
 <hr>
 
-
 <h3>
   {{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
-  <button formaction="">Убрать из избранного</button>
+  <button formaction="">Убрать из избранного (заглушка)</button>
 </h3>
 
 <img src="{{ product.image.url }}" height=100>

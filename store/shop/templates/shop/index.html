@@ -2,20 +2,6 @@
 
 {% block content %}
 
-<h3>Категории:</h3>
-<ul>
-  {% for category in categories %}
-
-  {% if category.slug == category_selected %}
-  <li>{{ category.title }}</li>
-  {% else %}
-  <li><a href="{% url 'product_category' category.slug %}">{{ category.title }}</a></li>
-  {% endif %}
-
-  {% endfor %}
-</ul>
-
-
 {% for product in products %}
 <hr>
 
@@ -26,9 +12,9 @@
 <p>
 <form method="get">
   {% if product.in_user_favorites %}
-  <button formaction="{% url 'home' %}">Убрать из избранного</button>
+  <button formaction="{% url 'home' %}">Убрать из избранного (заглушка)</button>
   {% else %}
-  <button formaction="{% url 'home' %}">Добавить в избранное</button>
+  <button formaction="{% url 'home' %}">Добавить в избранное (заглушка)</button>
   {% endif %}
 </form>
 </p>

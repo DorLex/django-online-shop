@@ -6,8 +6,5 @@ class DataMixin:
 
     paginate_by = 3  # пагинация, context_object_name теперь будет ссылаться на записи одной страницы
 
-    def get_common_context(self):
-        # прокидываем список всех категорий
-        categories = Categories.objects.all().only('id', 'slug', 'title', )
-        context = {'categories': categories, }
-        return context
+    # def get_common_context(self):
+    #     return context
