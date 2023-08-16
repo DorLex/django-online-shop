@@ -2,10 +2,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Prefetch
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView
 
 from .forms import RegisterUserForm
 from .models import Products
@@ -88,6 +88,24 @@ class ShowFavorites(DataMixin, ListView):
             .select_related('category') \
             .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
         return favorites_products
+
+
+class AddToFavorites(View):
+    def post(self, request, product_id, *args, **kwargs):
+        user = request.user
+        product = Products.objects.get(pk=product_id)
+        user.favorites_products.add(product)
+
+        return redirect('home')
+
+
+class RemoveFromFavorites(View):
+    def post(self, request, product_id, *args, **kwargs):
+        user = request.user
+        product = Products.objects.get(pk=product_id)
+        user.favorites_products.remove(product)
+
+        return redirect('home')
 
 
 class ProductDetail(DetailView):

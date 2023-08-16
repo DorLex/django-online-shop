@@ -10,11 +10,12 @@
 </h3>
 
 <p>
-<form method="get">
+<form method="post">
+  {% csrf_token %}
   {% if product.in_user_favorites %}
-  <button formaction="{% url 'home' %}">Убрать из избранного (заглушка)</button>
+  <button formaction="{% url 'remove_from_favorites' product.id %}">Убрать из избранного</button>
   {% else %}
-  <button formaction="{% url 'home' %}">Добавить в избранное (заглушка)</button>
+  <button formaction="{% url 'add_to_favorites' product.id %}">Добавить в избранное</button>
   {% endif %}
 </form>
 </p>

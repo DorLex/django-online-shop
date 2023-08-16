@@ -7,8 +7,15 @@
 
 <h3>
   {{ product.category.title }}: <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
-  <button formaction="">Убрать из избранного (заглушка)</button>
 </h3>
+
+<p>
+<form method="post" action="{% url 'remove_from_favorites' product.id %}">
+  {% csrf_token %}
+  <button>Убрать из избранного</button>
+</form>
+</p>
+
 
 <img src="{{ product.image.url }}" height=100>
 
