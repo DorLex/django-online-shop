@@ -3,11 +3,9 @@
 {% block content %}
 
 
-{% if cart_products|length == 0 %}
+{% if not cart_products %}
 <p>---Корзина пуста---</p>
-
 {% else %}
-
 <h3>Общая стоимость: {{ cart_products.0.cart.total_price }}</h3>
 
 {% for cart_product in cart_products %}

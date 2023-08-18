@@ -10,21 +10,17 @@ class CartView(ListView):
     template_name = 'cart/cart.html'
     paginate_by = 3
     context_object_name = 'cart_products'
+    extra_context = {'title': 'Корзина'}
 
     def get_queryset(self):
         user = self.request.user
         user_cart = Carts.objects.filter(user=user).only('id').first()
-        cart_products = CartProducts.objects.filter(cart=user_cart).select_related('product', 'cart'). \
-            only('id', 'product__title', 'product__image', 'quantity', 'product__price',
-                 'several_price', 'cart__total_price')
+        cart_products = CartProducts.objects.filter(cart=user_cart) \
+            .select_related('product', 'cart') \
+            .only('id', 'product__title', 'product__image', 'quantity', 'product__price',
+                  'several_price', 'cart__total_price')
 
         return cart_products
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Корзина'
-
-        return context
 
 
 class CartAdd(View):
