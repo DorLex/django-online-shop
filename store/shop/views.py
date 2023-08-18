@@ -144,6 +144,11 @@ class LogoutUser(LogoutView):
     """
     pass
 
+
+class PageNotFound(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'shop/error_404.html')
+
 # class ShowFavorites(View):
 #     def get(self, request, *args, **kwargs):
 #         user = request.user

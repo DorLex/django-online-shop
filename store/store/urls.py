@@ -19,10 +19,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-                  path('__debug__/', include('debug_toolbar.urls')),  # Панель Инструментов Отладки Django
+from shop import views
 
-                  path('admin/', admin.site.urls),
-                  path('', include('shop.urls')),
-                  path('cart/', include('cart.urls')),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # для изображений
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('shop.urls')),
+    path('cart/', include('cart.urls')),
+]
+
+if settings.DEBUG:
+    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]  # Панель Инструментов Отладки Django
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # для изображений
+
+handler404 = views.PageNotFound.as_view()
