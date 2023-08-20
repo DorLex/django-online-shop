@@ -5,7 +5,7 @@ from django.db.models import Prefetch
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
 from .models import Products
