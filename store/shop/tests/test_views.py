@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 
 from shop.models import Products, Categories
@@ -7,22 +7,23 @@ from shop.models import Products, Categories
 
 class TestShopView(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(username='test1', password='test1test1test1')
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='test1', password='test1test1test1')
 
-        self.category_1 = Categories.objects.create(
+        cls.category_1 = Categories.objects.create(
             title='тестовая категория 1',
             slug='test-category-1',
         )
 
-        self.product_1 = Products.objects.create(
+        cls.product_1 = Products.objects.create(
             title='Тестовый товар 1',
             slug='test-product-1',
             image='test-image',
             description='Описание тестового товара 1',
             price=15000,
             quantity=3,
-            category=self.category_1,
+            category=cls.category_1,
         )
 
     def test_home(self):
