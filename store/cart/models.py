@@ -5,7 +5,7 @@ from shop.models import Products
 
 
 class Carts(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(User, related_name='cart', on_delete=models.CASCADE, verbose_name='Пользователь')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Общая стоимость')
     time_created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_updated = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
