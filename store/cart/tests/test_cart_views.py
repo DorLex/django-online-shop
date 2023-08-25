@@ -42,6 +42,7 @@ class TestCartViews(TestCase):
 
     def test_add_to_cart(self):
         response_to_add = self.add_to_cart()
+        
         self.assertEqual(302, response_to_add.status_code)
 
         url_get = reverse('cart_view')
