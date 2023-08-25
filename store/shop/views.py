@@ -9,6 +9,7 @@ from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import RegisterUserForm
 from .models import Products
+from .services import db_services
 from .utils import DataMixin
 
 
@@ -16,23 +17,13 @@ class ShopHome(DataMixin, ListView):
     """Отображает все товары на главной странице"""
 
     extra_context = {'title': 'Главная страница', }
+    context_object_name = 'products'  # добавляем ссылку на context['object_list']
+    template_name = 'shop/index.html'
 
     # на результат по умолчанию будет ссылаться context['object_list']
     def get_queryset(self):
-        products = Products.objects.all() \
-            .select_related('category') \
-            .prefetch_related(
-            Prefetch(
-                'users_favorites',
-                queryset=User.objects.filter(pk=self.request.user.pk).only('id', ),  # фильтруем связанную таблицу М2М
-                to_attr='in_user_favorites'  # атрибут будет доступен у каждого элемента products
-            )
-        ).only('id', 'slug', 'title', 'image', 'price', 'category__title', )
-
+        products = db_services.get_all_products(self.request.user)
         return products
-
-    context_object_name = 'products'  # добавляем ссылку на context['object_list']
-    template_name = 'shop/index.html'
 
     # нужен, если контекст формируется с использованием экземпляра данного класса
     # def get_context_data(self, *, object_list=None, **kwargs):
@@ -57,16 +48,9 @@ class ProductsCategory(DataMixin, ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        products = Products.objects.filter(category__slug=self.kwargs['category_slug'], ) \
-            .select_related('category') \
-            .prefetch_related(
-            Prefetch(
-                'users_favorites',
-                queryset=User.objects.filter(pk=self.request.user.pk).only('id', ),
-                to_attr='in_user_favorites'
-            )
-        ).only('id', 'slug', 'title', 'image', 'price', 'category__title', )
-
+        products = db_services.get_products_of_selected_category(
+            self.kwargs['category_slug'], self.request.user
+        )
         return products
 
     def get_context_data(self, *, object_list=None, **kwargs):

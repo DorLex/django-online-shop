@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 
-class TestShopView(TestCase):
+class TestRegistrationAuthentication(TestCase):
 
     @classmethod
     def setUpTestData(cls):
