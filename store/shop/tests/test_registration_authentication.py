@@ -14,16 +14,19 @@ class TestShopView(TestCase):
             'password2': 'test1test1test1',
         }
 
-    def test_registration(self):
+    def registration(self):
         url_registration = reverse('register')
         response_registration = self.client.post(url_registration, data=self.user)
+        return response_registration
+
+    def test_registration(self):
+        self.registration()
 
         users = User.objects.all()
         self.assertEqual(1, users.count())
 
     def test_authentication(self):
-        url_registration = reverse('register')
-        response_registration = self.client.post(url_registration, data=self.user)
+        self.registration()
 
         url_login = reverse('login')
         response_login = self.client.post(url_login, data={
