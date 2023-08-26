@@ -34,5 +34,6 @@ def get_one_cart_product(product, user_cart):
 
 
 def get_cart_product_by_id(cart_product_id, user_cart):
+    """Возвращает один товар из корзины"""
     cart_product = CartProducts.objects.get(pk=cart_product_id, cart=user_cart)
     return cart_product

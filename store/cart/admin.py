@@ -14,8 +14,6 @@ class CartAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)  # поля, по которым можно будет производить поиск записей
     list_filter = ('time_created', 'time_updated',)  # поля, по которым можем фильтровать список
 
-    # prepopulated_fields = {'slug': ('user',)}  # автоматически заполняет поле slug по данным поля user
-
 
 class CartProductAdmin(admin.ModelAdmin):
     """Настраивает отображение таблицы CartProduct в админке"""
@@ -27,8 +25,6 @@ class CartProductAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'product',)  # список полей в виде ссылки для перехода к конкретной записи
     search_fields = ('product__title',)  # поля, по которым можно будет производить поиск записей
     list_filter = ('cart', 'time_created', 'time_updated',)  # поля, по которым можем фильтровать список
-
-    # prepopulated_fields = {'slug': ('product',)}  # автоматически заполняет поле slug по данным поля product
 
 
 admin.site.register(models.Carts, CartAdmin)

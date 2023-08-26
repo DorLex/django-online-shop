@@ -1,6 +1,3 @@
-from .models import Categories
-
-
 class DataMixin:
     """Общий контекст для ListView"""
 

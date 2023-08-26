@@ -20,7 +20,6 @@ class ProductAdmin(admin.ModelAdmin):
     # возвращает html тег с изображением
     def get_html_image(self, product):
         if product.image:
-            print(product.image.url)
             return format_html('<img src="{}" height=50>', product.image.url)
         else:
             return 'Нет изображения'

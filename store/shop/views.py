@@ -59,7 +59,7 @@ class ProductsCategory(DataMixin, ListView):
 
 
 class ShowFavorites(DataMixin, ListView):
-    """Отображает список избранного"""
+    """Отображает товары, добавленные в избранное"""
 
     template_name = 'shop/favorites.html'
     context_object_name = 'favorites_products'
@@ -124,5 +124,7 @@ class LogoutUser(LogoutView):
 
 
 class PageNotFound(View):
+    """Отображает страницу с кодом 404"""
+
     def get(self, request, *args, **kwargs):
         return render(request, 'shop/error_404.html')
