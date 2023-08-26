@@ -1,7 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.db.models import Prefetch
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -16,7 +14,7 @@ from .utils import DataMixin
 class ShopHome(DataMixin, ListView):
     """Отображает все товары на главной странице"""
 
-    extra_context = {'title': 'Главная страница', }
+    extra_context = {'title': 'Главная страница', }  # dict или list[(key, value),], т.к. используется kwargs.update()
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     template_name = 'shop/index.html'
 
@@ -68,27 +66,23 @@ class ShowFavorites(DataMixin, ListView):
     extra_context = {'title': 'Избранное', }
 
     def get_queryset(self):
-        favorites_products = Products.objects.filter(users_favorites=self.request.user) \
-            .select_related('category') \
-            .only('id', 'slug', 'title', 'image', 'price', 'category__title', )
+        favorites_products = db_services.get_favorites_products(self.request.user)
         return favorites_products
 
 
 class AddToFavorites(View):
-    def post(self, request, product_id, *args, **kwargs):
-        user = request.user
-        product = Products.objects.get(pk=product_id)
-        user.favorites_products.add(product)
+    """Добавляет товар в избранное"""
 
+    def post(self, request, product_id, *args, **kwargs):
+        db_services.add_to_favorites(request.user, product_id)
         return redirect('home')
 
 
 class RemoveFromFavorites(View):
-    def post(self, request, product_id, *args, **kwargs):
-        user = request.user
-        product = Products.objects.get(pk=product_id)
-        user.favorites_products.remove(product)
+    """Убирает товар их избранного"""
 
+    def post(self, request, product_id, *args, **kwargs):
+        db_services.remove_from_favorites(request.user, product_id)
         return redirect('home')
 
 
@@ -106,7 +100,7 @@ class RegisterUser(CreateView):
 
     form_class = RegisterUserForm  # используем свою форму
     template_name = 'shop/register.html'
-    extra_context = {'title': 'Регистрация', }  # только dict или list[(key, value),], т.к. используется kwargs.update()
+    extra_context = {'title': 'Регистрация', }
     success_url = reverse_lazy('login')  # ленивое перенаправление при успехе
 
 
@@ -132,11 +126,3 @@ class LogoutUser(LogoutView):
 class PageNotFound(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'shop/error_404.html')
-
-# class ShowFavorites(View):
-#     def get(self, request, *args, **kwargs):
-#         user = request.user
-#
-#         favorites_products = Products.objects.filter(users_favorites=user).only('title')
-#
-#         return render(request, 'shop/favorites.html', context={'test': favorites_products})
