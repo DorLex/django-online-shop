@@ -31,3 +31,8 @@ def get_one_cart_product(product, user_cart):
     cart_product = CartProducts.objects.filter(product=product, cart=user_cart). \
         only('id', 'quantity', 'several_price').first()
     return cart_product
+
+
+def get_cart_product_by_id(cart_product_id, user_cart):
+    cart_product = CartProducts.objects.get(pk=cart_product_id, cart=user_cart)
+    return cart_product

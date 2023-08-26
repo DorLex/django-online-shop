@@ -2,8 +2,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import ListView
 
-from .models import Carts, CartProducts
-from .services import add_to_cart_services, db_get_services
+from .services import add_to_cart_services, delete_from_cart_services, db_get_services
 
 
 class CartView(ListView):
@@ -33,10 +32,5 @@ class CartDelete(View):
     """Убирает товар из корзины"""
 
     def post(self, request, cart_product_id, *args, **kwargs):
-        user_cart = Carts.objects.get(user=request.user)
-        product_in_cart = CartProducts.objects.get(pk=cart_product_id, cart=user_cart)
-        product_in_cart.delete()
-        user_cart.total_price -= product_in_cart.several_price
-        user_cart.save()
-
+        delete_from_cart_services.delete_from_cart(request.user, cart_product_id)
         return redirect('cart_view')

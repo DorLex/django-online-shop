@@ -17,7 +17,7 @@ def _create_cart_product(product, product_quantity, several_price, user_cart):
 
 def _update_total_price_user_cart(user_cart, added_value):
     """Обновляет общую стоимость корзины"""
-    calculate_services.increase_cart_total_price(user_cart, added_value)
+    calculate_services.update_cart_total_price(user_cart, added_value)
     user_cart.save()
 
 
@@ -43,7 +43,7 @@ def _update_user_cart(product, product_quantity, several_price, user_cart):
 
 def add_to_cart(user, product_id, product_quantity):
     """Добавляет товар в корзину"""
-    
+
     product = db_get_services.get_product(product_id)
     several_price = calculate_services.calculate_several_price(product, product_quantity)
 

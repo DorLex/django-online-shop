@@ -14,6 +14,6 @@ def increase_cart_product_several_price(cart_product, several_price):
     cart_product.several_price += several_price
 
 
-def increase_cart_total_price(user_cart, added_value):
+def update_cart_total_price(user_cart, value):
     """Прибавляет общую стоимость корзины"""
-    user_cart.total_price += added_value
+    user_cart.total_price += value
