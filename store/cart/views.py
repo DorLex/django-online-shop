@@ -1,25 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import ListView
 
-from shop.models import Products
 from .models import Carts, CartProducts
+from .services import add_to_cart_services, db_get_services
 
 
 class CartView(ListView):
+    """Отображает товары, добавленные в корзину пользователя"""
+
     template_name = 'cart/cart.html'
     paginate_by = 3
     context_object_name = 'cart_products'
-    extra_context = {'title': 'Корзина'}
+    extra_context = {'title': 'Корзина', }
 
     def get_queryset(self):
-        user = self.request.user
-        user_cart = Carts.objects.filter(user=user).only('id').first()
-        cart_products = CartProducts.objects.filter(cart=user_cart) \
-            .select_related('product', 'cart') \
-            .only('id', 'product__title', 'product__image', 'quantity', 'product__price',
-                  'several_price', 'cart__total_price')
-
+        cart_products = db_get_services.get_cart_products(self.request.user)
         return cart_products
 
 
@@ -27,30 +23,8 @@ class CartAdd(View):
     """Добавление товара в корзину"""
 
     def post(self, request, product_id, *args, **kwargs):
-        user = request.user
-        product = Products.objects.filter(pk=product_id).only('id', 'price').first()
         product_quantity = request.POST.get('product_quantity')
-        several_price = product.price * int(product_quantity)
-
-        user_cart = Carts.objects.filter(user=user).only('id', 'total_price').first()
-        if user_cart:
-            cart_product = CartProducts.objects.filter(product=product, cart=user_cart). \
-                only('id', 'quantity', 'several_price').first()
-            if cart_product:
-                cart_product.quantity += int(product_quantity)
-                cart_product.several_price += several_price
-                cart_product.save()
-                user_cart.total_price += several_price
-                user_cart.save()
-            else:
-                CartProducts.objects.create(product=product, quantity=product_quantity,
-                                            several_price=several_price, cart=user_cart)
-                user_cart.total_price += several_price
-                user_cart.save()
-        else:
-            user_cart = Carts.objects.create(user=user, total_price=several_price)
-            CartProducts.objects.create(product=product, quantity=product_quantity,
-                                        several_price=several_price, cart=user_cart)
+        add_to_cart_services.add_to_cart(request.user, product_id, product_quantity)
 
         return redirect('cart_view')
 
