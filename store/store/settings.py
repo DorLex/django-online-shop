@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
+
 from pathlib import Path
 
 from decouple import config
@@ -152,9 +152,16 @@ INTERNAL_IPS = [
 ]
 
 # для изображений
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
 
 LOGIN_REDIRECT_URL = '/'  # url для перенаправления при успешной авторизации
 
 LOGOUT_REDIRECT_URL = '/'  # при разлогировании
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / 'cache',
+    }
+}
