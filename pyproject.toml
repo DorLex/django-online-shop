@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "django-online-shop"
+version = "0.1.0"
+description = ""
+authors = ["DorLex"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.5"
+pillow = "^10.0.0"
+psycopg2-binary = "^2.9.7"
+python-decouple = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
