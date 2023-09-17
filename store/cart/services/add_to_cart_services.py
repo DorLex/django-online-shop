@@ -16,7 +16,7 @@ def _create_cart_product(product, product_quantity, several_price, user_cart):
         several_price=several_price,
         cart=user_cart
     )
-    
+
     return cart_product
 
 
@@ -36,7 +36,7 @@ def _update_cart_product(cart_product, product_quantity, several_price, user_car
 def _update_user_cart(product, product_quantity, several_price, user_cart):
     """Обновляет корзину пользователя"""
 
-    cart_product = db_get_services.get_one_cart_product(product, user_cart)
+    cart_product = db_get_services.get_cart_product_by_product(product, user_cart)
 
     if cart_product:
         _update_cart_product(cart_product, product_quantity, several_price, user_cart)

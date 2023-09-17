@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
+from django.shortcuts import get_object_or_404
 
 from shop.models import Products
 
@@ -50,13 +51,13 @@ def get_favorites_products(user):
         .select_related('category')
         .only('id', 'slug', 'title', 'image', 'price', 'category__title')
     )
-    
+
     return favorites_products
 
 
 def get_product_by_id(product_id):
     """Возвращает один товар"""
-    product = Products.objects.get(pk=product_id)
+    product = get_object_or_404(Products, pk=product_id)
     return product
 
 
