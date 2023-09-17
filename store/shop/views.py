@@ -14,7 +14,7 @@ from .utils import DataMixin
 class ShopHome(DataMixin, ListView):
     """Отображает все товары на главной странице"""
 
-    extra_context = {'title': 'Главная страница', }  # dict или list[(key, value),], т.к. используется kwargs.update()
+    extra_context = {'title': 'Главная страница'}  # dict или list[(key, value),], т.к. используется kwargs.update()
     context_object_name = 'products'  # добавляем ссылку на context['object_list']
     template_name = 'shop/index.html'
 
@@ -63,7 +63,7 @@ class ShowFavorites(DataMixin, ListView):
 
     template_name = 'shop/favorites.html'
     context_object_name = 'favorites_products'
-    extra_context = {'title': 'Избранное', }
+    extra_context = {'title': 'Избранное'}
 
     def get_queryset(self):
         favorites_products = db_services.get_favorites_products(self.request.user)
@@ -100,7 +100,7 @@ class RegisterUser(CreateView):
 
     form_class = RegisterUserForm  # используем свою форму
     template_name = 'shop/register.html'
-    extra_context = {'title': 'Регистрация', }
+    extra_context = {'title': 'Регистрация'}
     success_url = reverse_lazy('login')  # ленивое перенаправление при успехе
 
 
@@ -112,7 +112,7 @@ class LoginUser(LoginView):
 
     form_class = AuthenticationForm  # используем стандартную форму
     template_name = 'shop/login.html'
-    extra_context = {'title': 'Авторизация', }
+    extra_context = {'title': 'Авторизация'}
 
 
 class LogoutUser(LogoutView):

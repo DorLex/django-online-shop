@@ -29,10 +29,10 @@ class TestRegistrationAuthentication(TestCase):
         self.registration()
 
         url_login = reverse('login')
-        response_login = self.client.post(url_login, data={
-            'username': 'test_username_1',
-            'password': 'test1test1test1',
-        })
+        response_login = self.client.post(
+            url_login,
+            data={'username': 'test_username_1', 'password': 'test1test1test1'}
+        )
 
         self.assertEqual(302, response_login.status_code)
 

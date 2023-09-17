@@ -11,8 +11,10 @@ class Products(models.Model):
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     time_created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_updated = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
-    category = models.ForeignKey('Categories', related_name='products', on_delete=models.PROTECT,
-                                 verbose_name="Категория")
+
+    category = models.ForeignKey('Categories', related_name='products',
+                                 on_delete=models.PROTECT, verbose_name="Категория")
+
     users_favorites = models.ManyToManyField(User, blank=True, related_name='favorites_products',
                                              verbose_name='Избранное пользователей')
 

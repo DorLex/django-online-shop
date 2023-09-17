@@ -12,10 +12,12 @@ def get_cart_products(user):
     """Возвращает товары, добавленные в корзину пользователя"""
 
     user_cart = get_user_cart(user)
-    cart_products = CartProducts.objects.filter(cart=user_cart) \
-        .select_related('product', 'cart') \
-        .only('id', 'product__title', 'product__image', 'quantity', 'product__price',
-              'several_price', 'cart__total_price')
+    cart_products = (
+        CartProducts.objects.filter(cart=user_cart)
+        .select_related('product', 'cart')
+        .only('id', 'product__title', 'product__image', 'quantity',
+              'product__price', 'several_price', 'cart__total_price')
+    )
 
     return cart_products
 
@@ -28,8 +30,10 @@ def get_product(product_id):
 
 def get_one_cart_product(product, user_cart):
     """Возвращает один товар из корзины"""
-    cart_product = CartProducts.objects.filter(product=product, cart=user_cart). \
-        only('id', 'quantity', 'several_price').first()
+    cart_product = (
+        CartProducts.objects.filter(product=product, cart=user_cart)
+        .only('id', 'quantity', 'several_price').first()
+    )
     return cart_product
 
 

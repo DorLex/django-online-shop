@@ -9,9 +9,9 @@ def show_categories(request):
     categories = cache.get('categories')
 
     if not categories:
-        categories = Categories.objects.all().only('id', 'slug', 'title', )
+        categories = Categories.objects.all().only('id', 'slug', 'title')
         cache.set('categories', categories, 60)
 
-    context = {'categories': categories, }
+    context = {'categories': categories}
 
     return context

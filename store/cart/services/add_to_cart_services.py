@@ -10,8 +10,13 @@ def _create_user_cart(user, several_price):
 
 def _create_cart_product(product, product_quantity, several_price, user_cart):
     """Создает товар в корзине"""
-    cart_product = CartProducts.objects.create(product=product, quantity=product_quantity,
-                                               several_price=several_price, cart=user_cart)
+    cart_product = CartProducts.objects.create(
+        product=product,
+        quantity=product_quantity,
+        several_price=several_price,
+        cart=user_cart
+    )
+    
     return cart_product
 
 

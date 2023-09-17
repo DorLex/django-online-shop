@@ -9,11 +9,19 @@ class ProductAdmin(admin.ModelAdmin):
 
     # список отображаемых полей
     list_display = (
-        'id', 'title', 'get_html_image', 'price', 'quantity', 'time_created', 'time_updated', 'category',
+        'id',
+        'title',
+        'get_html_image',
+        'price',
+        'quantity',
+        'time_created',
+        'time_updated',
+        'category',
     )
-    list_display_links = ('id', 'title',)  # список полей в виде ссылки для перехода к конкретной записи
-    search_fields = ('title', 'description',)  # поля, по которым можно будет производить поиск записей
-    list_filter = ('category', 'time_created', 'time_updated',)  # поля, по которым можем фильтровать список товаров
+
+    list_display_links = ('id', 'title')  # список полей в виде ссылки для перехода к конкретной записи
+    search_fields = ('title', 'description')  # поля, по которым можно будет производить поиск записей
+    list_filter = ('category', 'time_created', 'time_updated')  # поля, по которым можем фильтровать список товаров
     prepopulated_fields = {'slug': ('title',)}  # автоматически заполняет поле slug по данным поля title
     filter_horizontal = ('users_favorites',)
 
@@ -31,8 +39,8 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     """Настраивает отображение таблицы Category в админке"""
 
-    list_display = ('id', 'title',)  # список отображаемых полей
-    list_display_links = ('id', 'title',)  # список полей в виде ссылки для перехода к конкретной записи
+    list_display = ('id', 'title')  # список отображаемых полей
+    list_display_links = ('id', 'title')  # список полей в виде ссылки для перехода к конкретной записи
     search_fields = ('title',)  # поля, по которым можно будет производить поиск записей
     prepopulated_fields = {'slug': ('title',)}  # автоматически заполняет поле slug по данным поля title
 

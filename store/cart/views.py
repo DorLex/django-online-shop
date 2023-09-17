@@ -11,7 +11,7 @@ class CartView(ListView):
     template_name = 'cart/cart.html'
     paginate_by = 3
     context_object_name = 'cart_products'
-    extra_context = {'title': 'Корзина', }
+    extra_context = {'title': 'Корзина'}
 
     def get_queryset(self):
         cart_products = db_get_services.get_cart_products(self.request.user)
